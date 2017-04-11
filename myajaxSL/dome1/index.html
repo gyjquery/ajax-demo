@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="../jquery/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$.ajax({
+				url:"data4.json",
+				dataType:"json",
+				type:"GET",
+				success:function(data){
+					var data=data.data;
+					var wait=0;
+					var waitstr="";
+					var now=0;
+					var nowstr="";
+					var finish=0;
+					var finishstr="";
+				  $.each(data,function(index,value){
+				  	if(value.regVisitedState==0){
+                      wait++;
+                      waitstr+="<li><a href='javascript:void(0);' data-id="+value.id+">"+value.patName+"</a></li>";
+				  	}
+				  	if(value.regVisitedState==1){
+                      now++;
+                      nowstr+="<li><a href='javascript:void(0);' data-id="+value.id+">"+value.patName+"</a></li>";
+				  	}
+				  	if(value.regVisitedState==2){
+                      finish++;
+                      finishstr+="<li><a href='javascript:void(0);' data-id="+value.id+">"+value.patName+"</a></li>";
+				  	}
+				  }); 
+				  $(".wait span").html(wait);
+				  $(".now span").html(now);
+				  $(".finish span").html(finish);
+				  $(".wait").append(waitstr);
+				  $(".now").append(nowstr);
+				  $(".finish").append(finishstr);
+
+				},
+				complete:function(){
+					$("#patList a").click(function(){
+						$.ajax({
+						  url:"data5.json",
+						  dataType:"json",
+                          type:"GET",
+                          data:{"patId":$(this).attr("data-id")},
+                          success:function(data){
+                          	var data=data.data;
+                          	var str="";
+                          	$.each(data,function(index,value){
+                              str+="姓名："+value.patName+"性别:"+value.patSex+"身份证号"+value.patIdentityNum;
+                          	});
+                          	$(".main").html(str);
+                          }
+						});
+					});
+				}
+			});
+		});
+	</script>
+</head>
+<body>
+	<div id="patList">
+		<div class="wait">等诊:<span></span>人</div>
+		<div class="now">就诊:<span></span>人</div>
+		<div class="finish">完诊:<span></span>人</div>
+	</div>
+	<div class="main"></div>
+</body>
+</html>

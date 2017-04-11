@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="js/jquery-1.11.2.js"></script>
+	<script type="text/javascript">
+	 $(function(){
+	 	$("#dips").click(function(){
+	 		$.ajax({
+	 		 url:"checklogin.php",
+	 		 type:"POST",
+	 		 dataType:"json",
+	 		 data:{"userName":$("#userName").val(),"pwd":$("#pwd").val()},
+	 		 success:function(data){
+	 		 	if(data.status=="ok"){
+                 $("#div1").html(data.msg+data.userName);
+	 		 	}else{
+                  $("#tips").html(data.msg);
+	 		 	}
+	 		 }
+	 		});
+	 	});
+	 });
+	</script>
+</head>
+<body>
+<div id="div1">
+	<label for="userName">用户名:</label>
+	<input type="text" name="userName" id="userName"><br>
+	<label for="pwd">密码 :</label>
+	<input type="password" name="pwd" id="pwd"><br>
+	<input type="button" name="dips" id="dips" value="登录"><span id="tips"></span>
+	</div>
+</body>
+</html>

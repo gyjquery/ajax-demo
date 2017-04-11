@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		.highlight{
+			color: #ff0;
+		}
+	</style>
+	<script type="text/javascript" src="jquery/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript">
+	   $(function(){
+	   	 $("#userName").blur(function(){
+	   	 	$.ajax({
+	   	 	 url:"check.php",
+	   	 	 dataType:"json",
+	   	 	 type:"POST",
+	   	 	 data:{"userName":$("#userName").val()},
+	   	 	 success:function(data){
+              if(data.msg=="success"){
+                if(data.flag==1){
+                	$("#span1").html("此用户已被占用").addClass('heighlight');
+                }
+              }else{
+                  localtion.href="error.php";
+              }
+	   	 	 }
+	   	 	});
+	   	 });
+	   	 $("#userName").focus(function(){
+	   	 		$("#span1").html("");
+	   	 	});
+	   });
+	</script>
+</head>
+<body>
+ <form action="#" name="bd" method="POST">
+ 用户名：<input type="text" name="yhm" id="userName"><span id="span1"></span>
+ </form>
+</body>
+</html>

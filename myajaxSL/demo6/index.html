@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>图书管理系统</title>
+	<script type="text/javascript" src="../demo4/js/jquery-1.11.2.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			function showInfo(data){
+				var str="<tr><th>编号</th><th>书名</th><th>原价</th><th>现价</th><th>出版社</th><th>时间</th><tr>";
+		 		 $.each(data,function(index,value){
+                      str+="<tr><td>"+value.bookId+"</td><td>"+value.bookName+"</td><td>"+value.bookOri+"</td><td>"+value.bookprice+"</td><td>"+value.bookPub+"</td><td>"+value.bookAddTime+"</td></tr>";
+		 		 });
+		 		 $("#bg").html(str);
+			}
+		 //onload
+		 var page=1;
+		 var pagecount=0;
+		 $.ajax({
+		 	url:"moni.php",
+		 	dataType:"json",
+		 	type:"POST",
+		 	data:{"page":1},
+		 	success:function(data){
+		 		pagecount=data.pagecount;
+		 		var data=data.page;
+		 		showInfo(data);
+		 		 alert(page);
+		 	}
+		 });
+		 //下一页
+		   $("#bottom").click(function(){
+		   	if(page>=pagecount){
+		   		page=pagecount-1;
+		   	}
+		   	  $.ajax({
+		   	  	url:"moni.php",
+		   	  	dataType:"json",
+		   	  	type:"POST",
+		   	  	data:{"page":++page},
+		   	  	success:function(data){
+                   var data=data.page;
+                  showInfo(data);
+                  alert(page);
+		   	  	}
+                
+		   	  });
+		   });
+		 //上一页
+		  $("#top").click(function(){
+		   	if(page<=1){
+		   		page=2;
+		   	}
+		   	  $.ajax({
+		   	  	url:"moni.php",
+		   	  	dataType:"json",
+		   	  	type:"POST",
+		   	  	data:{"page":--page},
+		   	  	success:function(data){
+                   var data=data.page;
+                  showInfo(data);
+                  alert(page);
+		   	  	}
+
+		   	  });
+		   });
+		});
+	</script>
+</head>
+<body>
+  <div>图书管理系统</div>
+  <table id="bg">
+  	 
+  </table>
+  <span id="top">上一页</span>|<span id="bottom">下一页</span>
+</body>
+</html>
